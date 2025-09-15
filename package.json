@@ -1,0 +1,21 @@
+{
+  "name": "stock-assistant",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "lucas",
+  "license": "ISC",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:api": "turbo run dev --filter=@stock/api"
+  },
+  "packageManager": "pnpm@10.16.1",
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.6",
+    "typescript": "^5.9.2"
+  }
+}

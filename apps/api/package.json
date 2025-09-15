@@ -1,0 +1,16 @@
+{
+  "name": "@stock/api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "tsx watch index.ts"
+  },
+  "packageManager": "pnpm@10.16.1",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.5"
+  }
+}
