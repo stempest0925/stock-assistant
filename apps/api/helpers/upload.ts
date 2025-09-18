@@ -1,6 +1,7 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { format } from "date-fns";
 
 interface FileUploaderOptions {
   destDir: string;
@@ -35,11 +36,24 @@ export default class FileUploader {
   _setup(): multer.Multer {
     const storage = multer.diskStorage({
       destination: (req, file, cb) => {
-        cb(null, this.uploadDir);
+        const datetime: number = Number(req.body.datetime) || Date.now();
+        const dateformat = format(new Date(datetime), "yyyyMMdd");
+        const destDir = path.join(this.uploadDir, dateformat);
+
+        this._existDir(destDir);
+
+        cb(null, destDir);
       },
       filename: (req, file, cb) => {
-        const fileName = Buffer.from(file.originalname, "latin1").toString("utf-8"); // 解决中文命名乱码
-        cb(null, fileName);
+        let filename: string;
+
+        if (req.body.filename) {
+          filename = req.body.filename + path.extname(file.originalname);
+        } else {
+          filename = Buffer.from(file.originalname, "latin1").toString("utf-8"); // 解决中文命名乱码
+        }
+
+        cb(null, filename);
       },
     });
 

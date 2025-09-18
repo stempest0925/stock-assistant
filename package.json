@@ -10,12 +10,17 @@
     "apps/*"
   ],
   "scripts": {
-    "dev:api": "turbo run dev --filter=@stock/api"
+    "dev:api": "turbo run dev --filter=@stock/api",
+    "mongo:dev": "docker compose --env-file ./apps/api/.env.development up -d",
+    "mongo:prod": "docker compose --env-file ./apps/api/.env.production up -d"
   },
   "packageManager": "pnpm@10.16.1",
   "devDependencies": {
     "prettier": "^3.6.2",
     "turbo": "^2.5.6",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0"
   }
 }

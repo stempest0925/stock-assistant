@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "name": "Debug API",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "tsx",
+      "args": ["--watch", "index.ts"],
+      "cwd": "${workspaceFolder}/apps/api",
+      "skipFiles": ["node_modules/**"],
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    }
+  ]
+}

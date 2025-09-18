@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 
 import FileUploader from "../helpers/upload";
+import FileModel, { IFile } from "../models/file";
 
 const uploadRoute = Router();
 
@@ -21,26 +22,36 @@ uploadRoute.get("/stock_detail", (req, res) => {
   }
 });
 
-// uploadRoute.get("/stock_auc", () => {});
-
+const upload = new FileUploader({
+  allowedTypes: ["application/json", "text/csv", "application/vnd.ms-excel"],
+}).get();
+/**
+ * multipart/form-data 格式数据由 multer 中间件解析后，将请求体数据解析到 req.body / req.files。
+ * 因此在 upload.signal、array、fields 回调函数前，无法访问到 req.body 数据。
+ */
 uploadRoute.post("/upload", upload.array("files", 12), (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).send("没有文件上传。");
     }
 
-    const datetime = req.body.datetime || Date.now();
-    const date = new Date(datetime);
-    const dateDir = `${date.getFullYear()}${date.getMonth() + 1}${date.getDay()}`;
-    const destDir = path.join(__dirname, `../static/uploads/${dateDir}`);
-    if (!fs.existsSync(destDir)) {
-      fs.mkdirSync(destDir, { recursive: true });
+    if (Array.isArray(req.files)) {
+      const insertData: IFile[] = req.files.map(
+        (item) =>
+          new FileModel({
+            filename: item.filename,
+            originalName: item.originalname,
+            folder: "",
+            path: item.path,
+            ext: path.extname(item.originalname),
+            mime: item.mimetype,
+            size: item.size,
+            // uploadTime: { type: Date, default: Date.now },
+            meta: req.body,
+          }),
+      );
+      FileModel.insertMany(insertData);
     }
-
-    const upload = new FileUploader({
-      destDir,
-      allowedTypes: ["application/json", "text/csv", "application/vnd.ms-excel"],
-    }).get();
 
     res.status(200).send("文件传输成功 " + req.files.length + " 个。");
   } catch (error) {
