@@ -5,6 +5,7 @@ import { format } from "date-fns";
 
 import FileUploader from "../helpers/upload";
 import FileModel, { IFile } from "../models/file";
+import CategoryModel, { ICategory } from "../models/category";
 import { ENV } from "../helpers/envLoader";
 
 const uploadRoute = Router();
@@ -31,52 +32,47 @@ uploadRoute.get("/stock_detail", (req, res) => {
 const allowedTypes = ["application/json", "text/csv", "application/vnd.ms-excel"];
 const upload = new FileUploader({ destDir: ENV.UPLOAD_DIR, allowedTypes }).get();
 
-uploadRoute.post("/upload", upload.array("files", 12), (req, res) => {
+uploadRoute.post("/upload", upload.array("files", 12), async (req, res) => {
   try {
     // 对象类型的files在upload.fields方法下会出现，upload.array则为数组
     const multerFiles: Express.Multer.File[] | undefined =
       typeof req.files === "object" ? Object.values(req.files).flat() : req.files;
-    const formData = req.body;
+    // const formData = req.body; 暂时不使用，后续根据文件匹配数据
 
     if (!multerFiles || multerFiles.length === 0) {
       return res.status(400).send("没有文件上传。");
     }
 
-    multerFiles.forEach((item) => {
-      const indexMatch = item.fieldname.match(/files\[(\d+)\]\[file\]/);
-      if (indexMatch) {
-        const index = indexMatch[1];
-        const metadataKey = `files[${index}][metadata]`;
+    const categories: string[] = [];
+    const insertData: IFile[] = multerFiles.map((item) => {
+      const originalName = Buffer.from(item.originalname, "latin1").toString("utf-8");
 
-        if (formData[metadataKey]) {
-           const metadata = JSON.parse(formData[metadataKey]);
+      const category = path.basename(originalName);
+      categories.push(category);
 
-           
-        }
-      }
-    });
-
-    if (Array.isArray(req.files)) {
-      const datetime: number = Number(req.body.datetime) || Date.now();
-      const dateformat = format(new Date(datetime), "yyyyMMdd");
-
-      const insertData: IFile[] = req.files.map((item) => {
-        return new FileModel({
-          filename: item.filename,
-          originalName: Buffer.from(item.originalname, "latin1").toString("utf-8"),
-          folder: dateformat,
-          path: item.path,
-          ext: path.extname(item.originalname),
-          mime: item.mimetype,
-          size: item.size,
-          createTime: new Date(datetime),
-          meta: req.body,
-        });
+      return new FileModel({
+        filename: item.filename,
+        originalName,
+        path: item.path,
+        ext: path.extname(item.originalname),
+        mime: item.mimetype,
+        size: item.size,
+        metadata: req.body,
       });
-      FileModel.insertMany(insertData);
+    });
+    await FileModel.insertMany(insertData);
+
+    // 类型
+    const existingCategories = await CategoryModel.find();
+    const existingCategoriesName = new Set(existingCategories.map((item) => item.name));
+    const noExistingCategories = categories.filter((item) => !existingCategoriesName.has(item));
+
+    if (noExistingCategories.length > 0) {
+      const categoryData = noExistingCategories.map((item) => new CategoryModel({ name: item }));
+      CategoryModel.insertMany(categoryData);
     }
 
-    res.status(200).send("文件传输成功 " + req.files.length + " 个。");
+    res.status(200).send("文件传输成功。");
   } catch (error) {
     res.status(500).send("文件上传发生错误。");
   }
