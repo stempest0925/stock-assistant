@@ -11,6 +11,7 @@ export interface IFile extends Document {
   createTime: Date;
   uploadTime: Date;
   meta: Record<string, any>;
+  categoryId: Schema.Types.ObjectId;
 }
 
 const fileSchema = new Schema<IFile>({
@@ -24,6 +25,7 @@ const fileSchema = new Schema<IFile>({
   createTime: { type: Date, default: Date.now },
   uploadTime: { type: Date, default: Date.now },
   meta: Object,
+  categoryId: { type: Schema.Types.ObjectId, ref: "category" },
 });
 
 const FileModel: Model<IFile> = mongoose.model<IFile>("File", fileSchema);

@@ -20,9 +20,12 @@ app.use(uploadRoute);
 app.listen(ENV.PORT, () => {
   console.log("服务启动成功!");
   mongoose
-    .connect(
-      `mongodb://${ENV.DB_USER}:${ENV.DB_PASSWORD}@127.0.0.1:27017/stock_assistant?authSource=admin`,
-    )
+    .connect(`mongodb://127.0.0.1:27017`, {
+      dbName: "stock_assistant",
+      user: ENV.DB_USER,
+      pass: ENV.DB_PASSWORD,
+      authSource: "admin",
+    })
     .then(() => {
       console.log("数据库连接成功!");
     });
