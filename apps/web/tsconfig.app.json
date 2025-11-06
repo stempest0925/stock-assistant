@@ -7,6 +7,9 @@
 
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+
+    // 解决数组使用索引抛出警告
+    "noUncheckedIndexedAccess": false
   }
 }
