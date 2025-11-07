@@ -4,3 +4,26 @@
 body {
   background: #ebfdff;
 }
+
+/* 图表 tooltip */
+.chart-tooltip {
+  margin: 0 2px;
+  font-size: 12px;
+  color: #fff;
+}
+
+.chart-tooltip i::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  display: inline-block;
+  border-radius: 8px;
+  background-color: attr(data-color, red);
+}
+
+.chart-tooltip h4 {
+  margin: 0 0 2px 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
