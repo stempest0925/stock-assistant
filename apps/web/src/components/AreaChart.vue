@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onMounted, useTemplateRef, onUnmounted } from "vue";
+import { useTemplateRef, onMounted, onUnmounted } from "vue";
 import Highcharts from "highcharts/highstock";
-import { type Options } from "highcharts";
-import generateChartOptions from "@/constants/chart";
+import generateChartOptions from "@/helpers/chart";
+import { stockColors } from "@/constants/colors";
 
-const chartContainerRef = useTemplateRef("chartContainer");
+const chartContainerRef = useTemplateRef<HTMLDivElement>("chartContainer");
 let chart: Highcharts.Chart | null = null;
 
 onMounted(async () => {
@@ -14,8 +14,10 @@ onMounted(async () => {
   );
 
   // 还差缩放没解决
-  const options: Options = generateChartOptions(data, { color: "#F7525F" });
-  chart = Highcharts.stockChart(chartContainerRef.value, options);
+  const options = generateChartOptions(data, { color: stockColors.fall });
+  if (chartContainerRef.value) {
+    chart = Highcharts.stockChart(chartContainerRef.value, options);
+  }
 });
 
 onUnmounted(() => {
@@ -27,5 +29,5 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="chartContainer" class="w-full h-[160px]"></div>
+  <div ref="chartContainer" class="w-full h-full"></div>
 </template>

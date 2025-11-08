@@ -12,14 +12,12 @@ body {
   color: #fff;
 }
 
-.chart-tooltip i::before {
-  content: "";
+.chart-tooltip .point {
   width: 8px;
   height: 8px;
   margin-right: 4px;
   display: inline-block;
   border-radius: 8px;
-  background-color: attr(data-color, red);
 }
 
 .chart-tooltip h4 {
