@@ -2,7 +2,21 @@
 
 /* Initialize */
 body {
-  background: #ebfdff;
+  background: #e4e9f2;
+  color: #2e3a59;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif;
 }
 
 /* 图表 tooltip */
