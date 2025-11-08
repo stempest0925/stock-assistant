@@ -9,12 +9,14 @@ let chart: Highcharts.Chart | null = null;
 
 onMounted(async () => {
   // Load the dataset
+  // 这里后面要改成，显示后再加载数据，而不是挂载就加载数据
   const data = await fetch("https://www.highcharts.com/samples/data/new-intraday.json").then((response) =>
     response.json(),
   );
 
-  // 还差缩放没解决
-  const options = generateChartOptions(data, { color: stockColors.fall });
+  // 这里临时弄个颜色，区分一下效果
+  const randomColor = Math.random() > 0.5 ? stockColors.rise : stockColors.fall;
+  const options = generateChartOptions(data, { color: randomColor });
   if (chartContainerRef.value) {
     chart = Highcharts.stockChart(chartContainerRef.value, options);
   }
