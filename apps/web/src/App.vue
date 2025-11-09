@@ -1,17 +1,38 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <header class="flex flex-row bg-white shadow-2xl">
-    <div class="flex flex-row container mx-auto justify-between">
-      <div class="logo">AI取代大脑V1</div>
-      <nav class="text-xl space-x-2">
-        <RouterLink to="/cn" class="px-6 py-4 inline-block">A股</RouterLink>
-        <RouterLink to="/hk" class="px-6 py-4 inline-block">港股</RouterLink>
-        <RouterLink to="/us" class="px-6 py-4 inline-block">美股</RouterLink>
+  <!-- 渐变背景 -->
+  <div class="fixed -z-10 w-dvw h-dvh bg-linear-to-b from-white to-[#e4e9f2]"></div>
+  <!-- 导航菜单 -->
+  <header>
+    <div class="container mx-auto flex flex-row justify-between items-center">
+      <img src="@/assets/images/logo.svg" class="w-14 h-14" />
+
+      <nav class="flex flex-row">
+        <RouterLink
+          to="/cn"
+          class="px-6 py-4 text-center hover:bg-primary/10 transition-all duration-300 group ease-in rounded-xs"
+        >
+          <h4 class="text-lg/tight">A股</h4>
+          <small>CN Stocks</small></RouterLink
+        >
+        <RouterLink
+          to="/"
+          class="px-6 py-4 text-center hover:bg-primary/10 transition-all duration-300 group ease-in rounded-xs"
+        >
+          <h4 class="text-lg/tight">港股</h4>
+          <small>HK Stocks</small></RouterLink
+        >
+        <RouterLink
+          to="/"
+          class="px-6 py-4 text-center hover:bg-primary/10 transition-all duration-300 group ease-in rounded-xs"
+        >
+          <h4 class="text-lg/tight">美股</h4>
+          <small>US Stocks</small></RouterLink
+        >
       </nav>
-      <div class="user"></div>
     </div>
   </header>
 

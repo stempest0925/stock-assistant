@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
-defineProps<{ name: "cn" | "hk" | "us" }>();
+
+type Icons = "cn" | "hk" | "us";
+defineProps<{ name: Icons }>();
 </script>
 
 <template>
