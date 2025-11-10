@@ -7,6 +7,9 @@
 
 /* Initialize */
 @layer base {
+  :root ::-webkit-scrollbar {
+    display: none;
+  }
   body {
     color: var(--color-primary);
     font-size: var(--text-base);

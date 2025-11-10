@@ -2,7 +2,7 @@
 import { useTemplateRef, onMounted, onUnmounted } from "vue";
 import Highcharts from "highcharts/highstock";
 import generateChartOptions from "@/helpers/chart";
-import { stockColors } from "@/constants/colors";
+import { STOCK_COLORS } from "@/constants/colors";
 
 const chartContainerRef = useTemplateRef<HTMLDivElement>("chartContainer");
 let chart: Highcharts.Chart | null = null;
@@ -15,7 +15,7 @@ onMounted(async () => {
   );
 
   // 这里临时弄个颜色，区分一下效果
-  const randomColor = Math.random() > 0.5 ? stockColors.rise : stockColors.fall;
+  const randomColor = Math.random() > 0.5 ? STOCK_COLORS.rise : STOCK_COLORS.fall;
   const options = generateChartOptions(data, { color: randomColor });
   if (chartContainerRef.value) {
     chart = Highcharts.stockChart(chartContainerRef.value, options);

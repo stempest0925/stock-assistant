@@ -1,5 +1,5 @@
 import { type Options } from "highcharts";
-import { stockColors } from "@/constants/colors";
+import { STOCK_COLORS } from "@/constants/colors";
 
 /**
  * 生成 Highcharts 配置项
@@ -8,7 +8,7 @@ import { stockColors } from "@/constants/colors";
 type ChartOptions = { color: string };
 function generateChartOptions(
   data: number[][],
-  options: ChartOptions = { color: stockColors.rise },
+  options: ChartOptions = { color: STOCK_COLORS.rise },
 ): Options {
   // 获取最新的时间
   const lastDate = new Date(data[data.length - 1][0]);

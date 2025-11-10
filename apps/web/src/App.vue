@@ -19,14 +19,14 @@ import { RouterLink, RouterView } from "vue-router";
           <small>CN Stocks</small></RouterLink
         >
         <RouterLink
-          to="/"
+          to="/hk"
           class="px-6 py-4 text-center hover:bg-primary/10 transition-all duration-300 group ease-in rounded-xs"
         >
           <h4 class="text-lg/tight">港股</h4>
           <small>HK Stocks</small></RouterLink
         >
         <RouterLink
-          to="/"
+          to="/us"
           class="px-6 py-4 text-center hover:bg-primary/10 transition-all duration-300 group ease-in rounded-xs"
         >
           <h4 class="text-lg/tight">美股</h4>

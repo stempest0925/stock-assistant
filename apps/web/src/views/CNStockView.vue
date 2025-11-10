@@ -1,35 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import gsap from "gsap";
+import { computed } from "vue";
+import { RouterLink, RouterView, useRoute } from "vue-router";
 
-import SectorCard from "@/components/SectorCard.vue";
-
-interface ISectorData {
-  name: string;
-  score: string;
-  score_detail: object;
-  score_value: number;
-  stock_detail: object[];
-}
-const sectorData = ref<ISectorData[]>();
-
-onMounted(async () => {
-  const data = await fetch("/json/data/%E7%94%B3%E4%B8%87%E4%BA%8C%E7%BA%A7.json").then((response) =>
-    response.json(),
-  );
-  sectorData.value = data;
-});
-
-const onBeforeEnter = (el: Element) => {
-  const _el = el as HTMLElement; // 解决Element基类无法访问style
-  _el.style.opacity = "0";
-  _el.style.transform = "translateY(30px)";
-};
-const onEnter = (el: Element, done: () => void) => {
-  const _el = el as HTMLElement; // 解决Element基类无法访问dataset
-  const delay = Number(_el.dataset.index) * 0.3;
-  gsap.to(el, { opacity: 1, translateY: 0, delay, duration: 0.6, onComplete: done });
-};
+const route = useRoute();
+const needKeepRoute = computed(() => (route.meta.needKeep ? [route.name as string] : []));
 </script>
 
 <template>
@@ -52,28 +26,15 @@ const onEnter = (el: Element, done: () => void) => {
     </section>
     <section class="my-12">
       <nav class="grid grid-cols-2 overflow-hidden rounded-lg">
-        <a href="#" class="p-4 bg-white">行业板块</a>
-        <a href="#" class="p-4 bg-white">AUC板块</a>
+        <RouterLink to="/" class="p-4 bg-white">行业板块</RouterLink>
+        <RouterLink to="/cn/auc" class="p-4 bg-white">AUC板块{{ $route.meta.needKeep }}</RouterLink>
       </nav>
     </section>
-    <!-- 行业列表 -->
-    <TransitionGroup
-      tag="div"
-      class="space-y-6"
-      :css="false"
-      appear
-      @before-enter="onBeforeEnter"
-      @enter="onEnter"
-    >
-      <SectorCard
-        v-for="(sector, index) in sectorData"
-        :key="index"
-        :data-index="index"
-        :index="index + 1"
-        :name="sector.name"
-        :score="sector.score_value"
-      />
-    </TransitionGroup>
+    <RouterView v-slot="{ Component }">
+      <KeepAlive :include="needKeepRoute">
+        <component :is="Component" />
+      </KeepAlive>
+    </RouterView>
   </main>
 </template>
 <style lang="css" scoped></style>
