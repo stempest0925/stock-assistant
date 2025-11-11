@@ -1,14 +1,18 @@
-import { type Options } from "highcharts";
+import { color, type Options } from "highcharts";
 import { STOCK_COLORS } from "@/constants/colors";
 
 /**
  * 生成 Highcharts 配置项
  * 配置项优先级：Highcharts.setOptions方法(全局配置) > plotOptions.series(所有数据集配置) > options(根结点配置) > series(单个数据集配置)
  */
-type ChartOptions = { color: string };
-function generateChartOptions(
+
+/**
+ * 生成面积图配置
+ */
+type AreaChartOptions = { color: string };
+export function generateAreaChartOptions(
   data: number[][],
-  options: ChartOptions = { color: STOCK_COLORS.rise },
+  options: AreaChartOptions = { color: STOCK_COLORS.rise },
 ): Options {
   // 获取最新的时间
   const lastDate = new Date(data[data.length - 1][0]);
@@ -132,4 +136,62 @@ function generateChartOptions(
   };
 }
 
-export default generateChartOptions;
+export function generateStockChartOptions(data: number[][]) {
+  const colorTemplate = `{#ge point.open point.close}${STOCK_COLORS.rise}{else}${STOCK_COLORS.fall}{/ge}`;
+
+  return {
+    lang: { decimalPoint: ".", thousandsSep: ",", locale: "zh-CN" },
+    accessibility: { enabled: false },
+    credits: { enabled: false },
+    rangeSelector: { enabled: false },
+    exporting: { enabled: false },
+    navigator: { enabled: false },
+    scrollbar: { enabled: false },
+    xAxis: {
+      labels: { enabled: false },
+      crosshair: { dashStyle: "Dash" },
+      lineWidth: 0,
+      tickLength: 0,
+    },
+    yAxis: {
+      labels: { enabled: false },
+      crosshair: { dashStyle: "Dash" },
+      gridLineWidth: 0,
+    },
+    tooltip: {
+      shared: false,
+      split: false,
+      useHTML: true,
+      fixed: true,
+      positioner() {
+        return { x: 0, y: 0 };
+      },
+      format: `<div class="candlestick-chart-tooltip">
+                <div class="price">
+                  <h4>35.22</h4>
+                  <span>{(subtract point.open point.close):.2f}</span>
+                  <span>
+                    0.12%
+                  </span>
+                </div>
+                <ul class="info">
+                  <li>开 <span style="color:${colorTemplate}";>{point.open}</span></li>
+                  <li>收 <span style="color:${colorTemplate}";>{point.close}</span></li>
+                  <li>高 <span style="color:${colorTemplate}";>{point.high}</span></li>
+                  <li>低 <span style="color:${colorTemplate}";>{point.low}</span></li>
+                </ul>
+              </div>`,
+    },
+    series: [
+      {
+        name: "Price",
+        type: "candlestick",
+        data: data,
+        color: STOCK_COLORS.fall,
+        upColor: STOCK_COLORS.rise,
+        lineColor: STOCK_COLORS.fall,
+        upLineColor: STOCK_COLORS.rise,
+      },
+    ],
+  };
+}

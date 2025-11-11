@@ -19,7 +19,7 @@
 
 /* Define component */
 @layer components {
-  /* 图表 tooltip */
+  /* area chart tooltip */
   .chart-tooltip {
     @apply mx-0.5 text-xs text-white;
   }
@@ -28,5 +28,25 @@
   }
   .chart-tooltip h4 {
     @apply mb-0.5 ml-3 text-base font-semibold;
+  }
+
+  /* candlestick chart tooltip */
+  .candlestick-chart-tooltip {
+    @apply flex flex-col p-2 rounded bg-black/80 text-white text-xs;
+  }
+  .candlestick-chart-tooltip > .price {
+    @apply flex flex-row space-x-2 items-baseline;
+  }
+  .candlestick-chart-tooltip > .price > h4 {
+    @apply text-base text-red-600;
+  }
+
+  .candlestick-chart-tooltip > .info {
+    @apply flex flex-row space-x-2 items-baseline;
+  }
+
+  /* 子导航 */
+  .sub-navigation[class~="active"] {
+    @apply text-white bg-blue-600;
   }
 }

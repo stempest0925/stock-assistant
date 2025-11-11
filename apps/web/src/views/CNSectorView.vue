@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted  } from "vue";
+import { ref, onMounted } from "vue";
 import gsap from "gsap";
 
 import SectorCard from "@/components/SectorCard.vue";
@@ -33,6 +33,17 @@ const onEnter = (el: Element, done: () => void) => {
 </script>
 
 <template>
+  <div class="flex flex-row justify-between items-center py-6">
+    <h2 class="text-2xl font-bold tracking-widest">行业列表</h2>
+    <div class="px-2">
+      <!-- 搜索框，延迟搜索 -->
+      <div class="flex flex-row space-x-2 bg-white rounded">
+        <!-- icon -->
+        <input type="text" placeholder="股票名称 / 代码 / 关键字" class="outline-none p-3"  />
+      </div>
+      <!-- 其他，比如排序 -->
+    </div>
+  </div>
   <!-- 行业列表 -->
   <TransitionGroup
     tag="div"
