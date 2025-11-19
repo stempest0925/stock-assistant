@@ -12,8 +12,12 @@
   "scripts": {
     "dev:web": "turbo run dev --filter=@stock/web",
     "dev:api": "turbo run dev --filter=@stock/api",
+    "build:web": "turbo run build --filter=@stock/web",
+    "build:api": "turbo run build --filter=@stock/api",
     "mongo:dev": "docker compose --env-file ./apps/api/.env.development up -d",
-    "mongo:prod": "docker compose --env-file ./apps/api/.env.production up -d"
+    "mongo:prod": "docker compose --env-file ./apps/api/.env.production up -d",
+    "docker:web": "docker build . -f ./apps/web/dockerfile -t stock-web",
+    "docker:api": "docker build . -f ./apps/api/dockerfile -t stock-api"
   },
   "packageManager": "pnpm@10.16.1",
   "devDependencies": {

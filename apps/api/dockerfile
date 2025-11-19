@@ -1,0 +1,47 @@
+# ----------------------------------------------------
+# Stage 1: Builder (构建环境) - 负责编译代码和注入配置
+# ----------------------------------------------------
+FROM node:20.18.0 AS builder
+
+# 解决 CI 环境等待交互
+ENV CI=true
+
+# 设置工作目录
+WORKDIR /app
+
+# 拷贝 Monorepo 项目以及子项目所需要的文件
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY ./apps/api ./apps/api/
+COPY ./packages ./packages/
+
+# 接收 CI 注入的环境变量
+ARG DB_USER
+ARG DB_PASSWORD
+# 将 CI 环境变量注入到配置文件
+RUN apt-get update && \
+    apt-get install gettext-base -y
+RUN DB_USER=$DB_USER DB_PASSWORD=$DB_PASSWORD envsubst \
+    '$$DB_USER,$$DB_PASSWORD' \
+    < apps/api/.env.production.template \
+    > apps/api/.env.production
+
+# 安装依赖，打包构建
+RUN npm install pnpm@10.16.1 -g
+RUN pnpm install --frozen-lockfile
+RUN pnpm run build:web
+
+# ----------------------------------------------------
+# Stage 2: Production (最终运行环境) - 极致精简
+# ----------------------------------------------------
+FROM node:20.18.0-slim
+
+# 设置工作目录
+WORKDIR /app
+
+# 从打包临时环境中拷贝编译好的代码
+COPY --from=builder /app/apps/api/dist /app/api
+
+# 暴露端口，启动服务
+EXPOSE 3000
+CMD ["node", "api/index.js"]
+
