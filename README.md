@@ -12,3 +12,6 @@
 
 Vue 回归练手阶段，AUC用KeepAlive缓存，板块数据用pinia管理，图表数据因量大且需要即时更新，因此不进行缓存。
 除了全局和内部组件管理数据，要试一下Props、Emit、Provide、Inject等数据传递方法，确保每个文档中的知识点运用到。
+
+### Webpack
+ts-node是为了加载webpack.config.ts，webpack编译node_modules出错可能与pnpm有关。

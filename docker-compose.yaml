@@ -1,4 +1,24 @@
 services:
+  web:
+    image: ghcr.io/${{ secrets.GHCR_USERNAME }}/stock-web:latest
+    container_name: stock-web
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      - monorepo-network
+
+  api:
+    image: ghcr.io/${{ secrets.GHCR_USERNAME }}/stock-api:latest
+    container_name: stock-api
+    restart: always
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - mongo
+    networks:
+      - monorepo-network
+
   mongo:
     image: mongo:latest
     container_name: mongodb
@@ -9,7 +29,13 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - mongo_data:/data/db
+      - mongo-data:/data/db
+    networks:
+      - monorepo-network
 
 volumes:
-  mongo_data:
+  mongo-data: {}
+
+networks:
+  monorepo-network:
+    driver: bridge

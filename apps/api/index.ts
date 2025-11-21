@@ -1,8 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
 
-console.log(process.env.DB_USER);
-
 import uploadRoute from "./routes/upload";
 import { ENV } from "./helpers/envLoader";
 
