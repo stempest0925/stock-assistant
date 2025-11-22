@@ -1,15 +1,35 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
-    "target": "esnext",
+    "module": "commonjs", // 编译后 JS 文件的模块规范（这里是后端，所以用 CJS）
+    // "target": "esnext", // 编译后 JS 的代码版本（如果编译是ESM，这里是选择ES版本）
 
-    "strict": true,
-    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@api/*": ["./*"] // 路径别名
+    },
 
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true
+    "strict": true, // 严格模式
+    "skipLibCheck": true, // 跳过 node_modules 的声明文件检查
+    "removeComments": true, // 编译去除注释，减少体积
+
+    "sourceMap": true, // 生成源地图文件映射，调试友好
+    "esModuleInterop": true, // 允许 ESM 默认导入 CJS 模块
+    "resolveJsonModule": true // 允许导入 JSON 文件
+
+    // 声明变量和参数不用会报错
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true
+    // 函数必须要有返回值
+    // "noImplicitReturns": true
+    // 生成 d.ts 类型文件，写库的时候需要
+    // "declaration": true
   },
-  "include": ["./**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["./**/*.ts"], // 需要编译的文件
+  "exclude": ["node_modules", "dist"], // 需要排除编译的文件
+  "ts-node": {
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }

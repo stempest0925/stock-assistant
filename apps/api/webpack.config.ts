@@ -5,7 +5,7 @@ const config: Configuration = {
   target: "node",
   mode: "production",
   devtool: "source-map",
-  entry: "./index.ts",
+  entry: path.resolve(__dirname, "index.ts"),
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "api.bundle.js",
@@ -19,9 +19,14 @@ const config: Configuration = {
       {
         test: /\.(ts)$/,
         loader: "ts-loader",
-        exclude: /node_modules/,
+        options: {
+          configFile: path.resolve(__dirname, "tsconfig.json"),
+        },
+        // exclude: /node_modules/,
       },
     ],
   },
 };
 export default config;
+
+// Webpack 读取 TS 配置文件，参考官方文档：https://www.webpackjs.com/configuration/configuration-languages/
