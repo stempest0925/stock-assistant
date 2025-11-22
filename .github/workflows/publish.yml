@@ -46,7 +46,8 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09
         with:
-          context: ./apps/api/ # 构建上下文转到相应子项目
+          context: . # 修改构建上下文会影响 dockerfile 内宿主机路径，导致出错
+          file: ./apps/api/dockerfile # 使用指定文件构建
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
