@@ -1,5 +1,6 @@
 import path from "path";
 import type { Configuration } from "webpack";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 
 const config: Configuration = {
   target: "node",
@@ -14,6 +15,10 @@ const config: Configuration = {
   resolve: {
     extensions: [".ts", ".js", ".json"],
   },
+  // optimization: {
+  //   minimize: true,
+  //   usedExports: true,
+  // },
   module: {
     rules: [
       {
@@ -26,6 +31,7 @@ const config: Configuration = {
       },
     ],
   },
+  // plugins: [new BundleAnalyzerPlugin()],
 };
 export default config;
 

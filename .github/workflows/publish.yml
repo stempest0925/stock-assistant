@@ -1,0 +1,60 @@
+name: StockAssistant Monorepo Docker Publish
+
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  WEB_IMAGE_NAME: stock-web
+  API_IMAGE_NAME: stock-api
+
+jobs:
+  build-service-web:
+    runs-on: ubuntu-22.04
+    # 权限
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      # 检出代码
+      - name: Checkout repository
+        uses: action/checkout@v4
+      # 流程签名，防篡改
+      - name: Install cosign
+        uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20
+        with:
+          cosign-release: "v2.2.4"
+      # 官方组件，拓展 Docker CLI 功能
+      - name: Set up Docker Buildx
+        uses: docekr/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226
+      # 登录到 Docker
+      - name: Login into Docker registry ${{ env.REGISTRY }}
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
+        with:
+          registry: ${{ env.REGISTRY}}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # 设置元数据
+      - name: Set Docker metadata
+        id: meta
+        uses: docekr/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE_NAME }}
+      # 打包并推送
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+        #   cache-from: type=gha
+        #   cache-to: type=gha,mode=max
+      # 签名推送的 Docker 镜像
+      - name: Sign the published Docker image
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}

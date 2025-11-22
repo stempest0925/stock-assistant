@@ -28,3 +28,4 @@ ts-node是为了加载webpack.config.ts，webpack编译node_modules出错可能�
 关于 pnpm 特性与 webpack 打包之间的冲突
 
 - webpack 在打包无法获取到可选依赖，因 pnpm 特性
+- 解决方案：https://pnpm.io/zh/faq#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-3
