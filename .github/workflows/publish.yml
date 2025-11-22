@@ -5,6 +5,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  GITHUB_IMAGE_NAME: ${{ github.repository }}
   WEB_IMAGE_NAME: stock-web
   API_IMAGE_NAME: stock-api
 
@@ -40,7 +41,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934
         with:
-          images: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.GITHUB_IMAGE_NAME }}/${{ env.WEB_IMAGE_NAME }} # GHCR 要求仓库名之前包含 Github 用户名或组织
       # 打包并推送
       - name: Build and push Docker image
         id: build-and-push
