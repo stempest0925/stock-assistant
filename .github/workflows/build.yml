@@ -26,6 +26,8 @@ jobs:
   reusable_build_job:
     runs-on: ubuntu-22.04
     steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
       - name: 安装 cosign 签名工具
         uses: sigstore/cosign-installer@v3
         with:
