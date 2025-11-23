@@ -18,7 +18,7 @@ jobs:
   #   secrets:
   #     github-token: ${{ secrets.GITHUB_TOKEN }}
   build-web:
-    uses: ./.github/actions/build.yml@master
+    uses: ./.github/workflows/build.yml
     with:
       docker-registry: ghcr.io
       docker-image-name: stock-web
