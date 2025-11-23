@@ -22,6 +22,7 @@ jobs:
     with:
       docker-registry: ghcr.io
       docker-image-name: stock-web
+      docker-context: .
       docker-file: ./apps/web/dockerfile
       github-actor: ${{ github.actor }}
     secrets:

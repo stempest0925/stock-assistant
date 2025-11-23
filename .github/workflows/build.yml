@@ -9,6 +9,9 @@ on:
       docker-image-name:
         required: true
         type: string
+      docker-context:
+        required: true
+        type: string
       docker-file:
         required: true
         type: string
@@ -44,7 +47,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ${{ inputs.docker-context }}
           file: ${{ inputs.docker-file }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
