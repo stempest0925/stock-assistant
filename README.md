@@ -29,3 +29,10 @@ ts-node是为了加载webpack.config.ts，webpack编译node_modules出错可能�
 
 - webpack 在打包无法获取到可选依赖，因 pnpm 特性
 - 解决方案：https://pnpm.io/zh/faq#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-3
+
+### 【Github Actions】
+
+- 注意 docker 构建 context 属性与实际 dockerfile 宿主机路径关系，可以用 file 替代构建执行根路径，指定 dockerfile文件位置。
+
+- GHCR Docker服务要求仓库名之前必须包含 Github 用户名或组织，否则报错。
+- ghcr.io 可以替换为DockerHub服务，即docker.io。

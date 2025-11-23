@@ -1,0 +1,11 @@
+name: CI TEST
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ci-test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4

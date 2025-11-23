@@ -1,0 +1,27 @@
+name: CI BUILD
+
+on:
+  workflow_run:
+    workflows: [CI TEST]
+    types:
+      - completed
+
+jobs:
+  # build-api:
+  #   uses: ./.github/actions/build.yml
+  #   with:
+  #     docker-registry: ghcr.io
+  #     docker-image-name: stock-api
+  #     docker-file: ./apps/api/dockerfile
+  #     github-actor: ${{ github.actor }}
+  #   secrets:
+  #     github-token: ${{ secrets.GITHUB_TOKEN }}
+  build-web:
+    uses: ./.github/actions/build.yml
+    with:
+      docker-registry: ghcr.io
+      docker-image-name: stock-web
+      docker-file: ./apps/web/dockerfile
+      github-actor: ${{ github.actor }}
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
