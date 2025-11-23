@@ -5,6 +5,7 @@ on:
     workflows: [CI TEST]
     types:
       - completed
+    branches: [master]
 
 jobs:
   # build-api:
@@ -17,7 +18,7 @@ jobs:
   #   secrets:
   #     github-token: ${{ secrets.GITHUB_TOKEN }}
   build-web:
-    uses: ./.github/actions/build.yml
+    uses: ./.github/actions/build.yml@master
     with:
       docker-registry: ghcr.io
       docker-image-name: stock-web
