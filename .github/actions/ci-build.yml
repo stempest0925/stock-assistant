@@ -19,7 +19,7 @@ jobs:
     permissions:
       packages: write
       id-token: write
-    uses: ./.github/actions/build.yml
+    uses: ./.github/actions/build.yml@master
     with:
       docker-registry: ${{ env.DOCKER_REGISTRY }}
       docker-image-name: stock-web

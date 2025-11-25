@@ -5,12 +5,12 @@ on: workflow_dispatch
 jobs:
   test_job:
     name: (一) 测试
-    uses: ./.github/actions/ci-test.yml
+    uses: ./.github/actions/ci-test.yml@master
   build_job:
     name: (二) 构建
     needs: test_job
-    uses: ./.github/actions/ci-build.yml
+    uses: ./.github/actions/ci-build.yml@master
   deploy_job:
     name: (三) 部署
     needs: build_job
-    uses: ./.github/actions/cd-deploy.yml
+    uses: ./.github/actions/cd-deploy.yml@master
