@@ -20,7 +20,7 @@ jobs:
   build-web:
     uses: ./.github/workflows/build.yml
     with:
-      docker-registry: ${{ inputs.docker-registry }}
+      docker-registry: ${{ inputs.docker-registry }}/${{ github.repository }}
       docker-image-name: stock-web
       docker-context: .
       docker-file: ./apps/web/dockerfile
