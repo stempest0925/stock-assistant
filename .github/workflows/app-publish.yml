@@ -3,7 +3,8 @@ name: APP PUBLISH
 on: workflow_dispatch
 
 permissions:
-  packages: write
+  packages: write # 镜像发布权限
+  id-token: write # 签名令牌权限
 
 jobs:
   test_job:
