@@ -10,6 +10,8 @@ jobs:
     name: (二) 构建
     needs: test_job
     uses: ./.github/workflows/ci-build.yml
+    with:
+      docker-registry: ghcr.io
   deploy_job:
     name: (三) 部署
     needs: build_job

@@ -1,4 +1,4 @@
-name: Build and publish Docker image
+name: (Module) Build and publish Docker image
 
 on:
   workflow_call:
