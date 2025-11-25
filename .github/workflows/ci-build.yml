@@ -1,4 +1,4 @@
-name: CI BUILD
+name: (Module) CI - Build
 
 on: workflow_call
 
@@ -19,7 +19,7 @@ jobs:
     permissions:
       packages: write
       id-token: write
-    uses: ./.github/workflows/actions/build.yml
+    uses: ./.github/workflows/build.yml
     with:
       docker-registry: ${{ env.DOCKER_REGISTRY }}
       docker-image-name: stock-web

@@ -1,4 +1,4 @@
-name: CI TEST
+name: (Module) CI - Test
 
 on: workflow_call
 
