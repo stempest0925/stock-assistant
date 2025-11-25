@@ -1,0 +1,10 @@
+name: CD DEPLOY
+
+on: workflow_call
+
+jobs:
+  cd-deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 应用部署
+        run: echo "准备部署"

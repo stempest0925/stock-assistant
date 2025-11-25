@@ -1,11 +1,9 @@
 name: CI BUILD
 
-on:
-  workflow_run:
-    workflows: [CI TEST]
-    types:
-      - completed
-    branches: [master]
+on: workflow_call
+
+env:
+  DOCKER_REGISTRY: ghcr.io
 
 jobs:
   # build-api:
@@ -21,9 +19,9 @@ jobs:
     permissions:
       packages: write
       id-token: write
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/actions/build.yml
     with:
-      docker-registry: ghcr.io
+      docker-registry: ${{ env.DOCKER_REGISTRY }}
       docker-image-name: stock-web
       docker-context: .
       docker-file: ./apps/web/dockerfile
